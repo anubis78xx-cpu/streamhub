@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0d0f17">
+  <meta name="description" content="Toutes tes apps de streaming au même endroit.">
+  <title>StreamHub</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>StreamHub <span id="appVersion" class="version"></span></h1>
+    <div class="row">
+      <button id="vpnBtn" class="vpn" title="Ouvrir mon VPN">🛡 VPN...</button>
+      <button id="installBtn" class="btn small" hidden>Installer</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Home: my services -->
+    <section id="view-home" class="view active">
+      <h2>Mes services</h2>
+      <div id="homeGrid" class="grid"></div>
+      <p id="homeEmpty" class="hint" hidden>Aucun service choisi. Va dans Réglages pour cocher tes abonnements.</p>
+      <div class="row center mt"><button id="randomBtn" class="btn">🎲 Je ne sais pas quoi regarder</button></div>
+      <div id="randomBox" class="random" hidden></div>
+
+      <h2 class="mt">À regarder ensuite</h2>
+      <div id="homeNext" class="list"></div>
+      <p id="homeNextEmpty" class="hint" hidden>Ta liste est vide. Utilise Chercher pour ajouter des films et séries.</p>
+
+      <div id="discover"></div>
+    </section>
+
+    <!-- Live and replay, played inside StreamHub -->
+    <section id="view-live" class="view">
+      <div id="player" class="player" hidden>
+        <div class="frame"><iframe id="playerFrame" title="Lecteur"
+          allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+          allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+        <div class="row">
+          <div id="playerTitle" class="title grow"></div>
+          <button id="playerOpen" class="btn mini">Ouvrir dans l'app</button>
+          <button id="playerClose" class="btn mini">✕</button>
+        </div>
+      </div>
+
+      <h2>En direct</h2>
+      <div id="liveGrid" class="grid live"></div>
+
+      <h2 class="mt">Mes vidéos et chaînes</h2>
+      <div id="myVideos" class="list"></div>
+      <p id="myVideosEmpty" class="hint">Colle un lien YouTube, Dailymotion, Twitch ou Arte pour le regarder ici.</p>
+      <form id="videoForm" class="stack">
+        <input name="url" type="url" placeholder="Lien (youtube.com, dailymotion.com, twitch.tv, arte.tv)" required>
+        <input name="name" placeholder="Nom (optionnel)">
+        <button class="btn" type="submit">Ajouter</button>
+      </form>
+    </section>
+
+    <!-- Search -->
+    <section id="view-search" class="view">
+      <form id="searchForm" class="searchbar">
+        <input id="searchInput" type="search" placeholder="Ex : animés sur Crunchyroll" autocomplete="off" enterkeyhint="search">
+        <button class="btn" type="submit">Chercher</button>
+      </form>
+      <div class="row center filterbar"><button id="filterBtn" class="chip other" type="button">⚙ Filtres</button></div>
+      <div id="filterBox" class="filters" hidden></div>
+      <div id="searchHistory" class="history" hidden></div>
+      <p id="searchHint" class="hint"></p>
+      <div id="searchTabs" class="srctabs" hidden>
+        <button class="srctab active" data-pane="searchResults">Plateformes</button>
+        <button class="srctab" data-pane="searchVideos">Vidéos <span id="videoCount"></span></button>
+        <button class="srctab" data-pane="searchWeb">Sur internet</button>
+      </div>
+      <div id="searchResults" class="list srcpane"></div>
+      <div id="searchVideos" class="srcpane" hidden></div>
+      <div id="searchWeb" class="srcpane" hidden></div>
+    </section>
+
+    <!-- Watchlist -->
+    <section id="view-list" class="view">
+      <div class="tabs">
+        <button class="tab active" data-filter="todo">À voir</button>
+        <button class="tab" data-filter="seen">Vus</button>
+      </div>
+      <div id="watchlist" class="list"></div>
+      <p id="listEmpty" class="hint" hidden>Rien ici pour l'instant.</p>
+    </section>
+
+    <!-- Settings -->
+    <section id="view-settings" class="view">
+      <h2>Mes abonnements</h2>
+      <p class="hint">Coche les services que tu utilises. Tes identifiants restent dans les apps officielles : StreamHub ne les voit jamais.</p>
+      <div id="serviceToggles" class="toggles"></div>
+
+      <h2 class="mt">Ajouter un service</h2>
+      <form id="customForm" class="stack">
+        <input name="name" placeholder="Nom (ex : Molotov)" required>
+        <input name="web" type="url" placeholder="Adresse web (https://...)" required>
+        <input name="pkg" placeholder="Package Android (optionnel, ex : tv.molotov.app)">
+        <label class="row">Couleur <input name="color" type="color" value="#7c5cff"></label>
+        <button class="btn" type="submit">Ajouter</button>
+      </form>
+
+      <h2 class="mt">Clé TMDB (optionnel)</h2>
+      <p class="hint">StreamHub a déjà sa clé. Si la recherche ne répond plus, tu peux mettre ta propre clé gratuite, à créer sur <a href="https://www.themoviedb.org/settings/api" target="_blank" rel="noopener">themoviedb.org</a>.</p>
+      <form id="tmdbForm" class="stack">
+        <input id="tmdbKey" placeholder="Clé API TMDB (v3) ou jeton de lecture (v4)" autocomplete="off">
+        <button class="btn" type="submit">Enregistrer la clé</button>
+      </form>
+
+      <h2 class="mt">Mes sites vidéo</h2>
+      <p class="hint">Les sites où tu regardes des vidéos publiques. Ils apparaissent dans Chercher, onglet « Sur internet ».
+        Pour une recherche directe sur le site, fais-y une recherche du mot <b>test</b> et colle l'adresse de la page de résultats.
+        Sans ça, StreamHub cherche sur le site via Google.</p>
+      <div id="siteList" class="list sites"></div>
+      <form id="siteForm" class="stack">
+        <input name="name" placeholder="Nom du site" required>
+        <input name="url" type="url" placeholder="Adresse du site (https://...)" required>
+        <input name="search" type="url" placeholder="Adresse d'une recherche « test » (optionnel)">
+        <button class="btn" type="submit">Ajouter le site</button>
+      </form>
+
+      <div id="adblockBox" hidden>
+        <h2 class="mt">Bloqueur de pubs</h2>
+        <p class="hint">Bloque les pubs et pisteurs uniquement sur les sites que tu as ajoutés dans « Mes sites vidéo » ci-dessus.
+          Sans site ajouté, il ne fait rien. Il n'agit nulle part ailleurs : ni dans le reste de StreamHub, ni dans les autres applis, ni sur YouTube et les plateformes officielles.
+          Si un site ne marche plus, coupe-le le temps de le regarder.</p>
+        <label class="toggle adblock"><input id="adblockOn" type="checkbox"> <span id="adblockText">Bloquer les pubs</span></label>
+        <p class="hint">Liste de blocage : <a href="https://github.com/AdguardTeam/AdguardSDNSFilter" target="_blank" rel="noopener">AdGuard DNS filter</a> (licence GPL-3.0), mise à jour chaque semaine.</p>
+      </div>
+
+      <div id="vpnBox" hidden>
+        <h2 class="mt">Mon VPN</h2>
+        <p class="hint">Le bouton 🛡 en haut montre si un VPN est actif et l'ouvre. Choisis ton appli VPN :</p>
+        <div id="vpnPick"></div>
+        <p id="vpnNone" class="hint" hidden>Aucune appli VPN trouvée sur ce téléphone : le bouton ouvre les réglages VPN d'Android.</p>
+      </div>
+
+      <h2 class="mt">Synchro entre appareils (optionnel)</h2>
+      <p class="hint">Sans rien régler, tes données restent sur ce téléphone (utilise Exporter / Importer pour les copier).
+        Si tu as ton propre serveur de synchro StreamHub, entre son adresse : ta liste, tes épisodes vus et tes services seront identiques sur tes appareils, protégés par un code secret.</p>
+      <div id="syncBox" class="stack"></div>
+
+      <h2 class="mt">Sauvegarde</h2>
+      <div class="row wrap">
+        <button id="exportBtn" class="btn ghost">Exporter</button>
+        <label class="btn ghost">Importer<input id="importFile" type="file" accept="application/json" hidden></label>
+        <button id="resetBtn" class="btn danger">Tout effacer</button>
+      </div>
+
+      <h2 class="mt">Importer depuis une autre appli</h2>
+      <p class="hint">Récupère ta liste et ce que tu as déjà vu depuis TV Time, Trakt, Letterboxd ou IMDb :
+        exporte tes données dans l'appli (fichier CSV ou JSON), puis choisis le fichier ici. Un fichier « watched », « history » ou « seen » marque les titres comme vus.</p>
+      <div class="row wrap center"><label class="btn ghost">Choisir un fichier<input id="importOther" type="file" accept=".csv,.json,text/csv,application/json" hidden></label></div>
+      <p id="importOtherStatus" class="hint"></p>
+
+      <p class="hint credit mt">Ce produit utilise l'API TMDB mais n'est ni approuvé ni certifié par TMDB. Données « où regarder » : JustWatch, via TMDB.
+        StreamHub ne lit aucune vidéo protégée : chaque service s'ouvre dans son appli officielle.</p>
+    </section>
+  </main>
+
+  <nav class="bottomnav">
+    <button class="nav active" data-view="home"><span>🏠</span>Accueil</button>
+    <button class="nav" data-view="live"><span>📺</span>Direct</button>
+    <button class="nav" data-view="search"><span>🔎</span>Chercher</button>
+    <button class="nav" data-view="list"><span>📋</span>Ma liste</button>
+    <button class="nav" data-view="settings"><span>⚙️</span>Réglages</button>
+  </nav>
+
+  <div id="toast" class="toast" hidden></div>
+  <script src="tmdb-key.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

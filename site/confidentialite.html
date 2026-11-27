@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0d0f17">
+  <title>StreamHub · Confidentialité</title>
+  <link rel="icon" href="icon-192.png">
+  <style>
+    :root { --bg: #0d0f17; --card: #161a27; --text: #e8eaf2; --dim: #9aa1b5; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    main { max-width: 720px; margin: 0 auto; padding: 32px 16px 48px; }
+    h1 { font-size: 26px; margin: 0 0 4px; }
+    h2 { font-size: 19px; margin: 28px 0 8px; }
+    .dim { color: var(--dim); }
+    table { width: 100%; border-collapse: collapse; font-size: 15px; }
+    th, td { text-align: left; vertical-align: top; padding: 8px; border-bottom: 1px solid #2a3044; }
+    th { color: var(--dim); font-weight: 600; }
+    a { color: #a99bff; }
+    section.en { background: var(--card); border-radius: 14px; padding: 4px 18px 16px; margin-top: 36px; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Politique de confidentialité de StreamHub</h1>
+  <p class="dim">Dernière mise à jour : 30 octobre 2026 · Appli Android « StreamHub » (fr.streamhub.android)</p>
+
+  <h2>En bref</h2>
+  <p>StreamHub n'a pas de compte utilisateur, pas de publicité, pas de statistiques d'usage et pas de serveur à nous.
+    Tout ce que tu enregistres (tes services, ta liste, tes épisodes vus, tes sites, ton historique de recherche) reste
+    <b>sur ton téléphone</b>. Le développeur ne reçoit et ne vend aucune donnée.</p>
+
+  <h2>Données enregistrées sur ton téléphone</h2>
+  <p>Tes réglages, ta liste, ton suivi d'épisodes, tes sites ajoutés et ton historique de recherche sont stockés localement par l'appli.
+    Tu peux tout effacer dans Réglages (« Tout effacer ») ou en désinstallant l'appli. « Exporter » crée un fichier que toi seul choisis où envoyer.</p>
+
+  <h2>Services tiers contactés par l'appli</h2>
+  <p>Pour fonctionner, l'appli interroge directement les services ci-dessous. Comme pour tout site web, ils reçoivent
+    l'adresse IP de ton téléphone et la requête envoyée. Ils ont leur propre politique de confidentialité.</p>
+  <table>
+    <tr><th>Service</th><th>Quand</th><th>Ce qui est envoyé</th></tr>
+    <tr><td><a href="https://www.themoviedb.org/privacy-policy">TMDB</a></td><td>Recherche, nouveautés, épisodes</td><td>Le texte recherché ou le titre consulté</td></tr>
+    <tr><td><a href="https://legal.dailymotion.com/fr/politique-donnees-personnelles/">Dailymotion</a></td><td>Onglet « Vidéos » d'une recherche</td><td>Le texte recherché</td></tr>
+    <tr><td><a href="https://policies.google.com/privacy">Google</a> (icônes des sites)</td><td>Affichage des services et sites</td><td>Le nom du site dont l'icône est affichée</td></tr>
+    <tr><td><a href="https://github.com/AdguardTeam/AdguardSDNSFilter">AdGuard</a> (liste de blocage, via GitHub)</td><td>Une fois par semaine</td><td>Le téléchargement de la liste, rien d'autre</td></tr>
+    <tr><td>ipinfo.io, freeipapi.com, ipwho.is</td><td>Seulement quand un VPN est actif, au plus toutes les 10 minutes</td><td>Rien : ils renvoient le pays de sortie de ta connexion, affiché sur le bouton VPN</td></tr>
+    <tr><td>Les sites et applis que tu ouvres</td><td>Quand tu les ouvres</td><td>Comme dans un navigateur</td></tr>
+  </table>
+
+  <h2>Synchronisation (optionnelle)</h2>
+  <p>Désactivée par défaut. Si tu entres l'adresse de <b>ton propre</b> serveur de synchronisation, tes données y sont envoyées,
+    protégées par un code secret que toi seul connais. Le développeur n'exploite aucun serveur de synchronisation.</p>
+
+  <h2>Autorisations Android</h2>
+  <ul>
+    <li><b>Internet</b> : pour les recherches et les sites.</li>
+    <li><b>État du réseau</b> : uniquement pour savoir si un VPN est actif (bouton VPN).</li>
+    <li><b>Liste des applis VPN et des applis de streaming installées</b> : pour ouvrir la bonne appli. Cette liste ne quitte pas le téléphone.</li>
+  </ul>
+  <p>L'appli n'a accès ni à ta position, ni à ton micro, ni à ta caméra, ni à tes contacts.</p>
+
+  <h2>Enfants</h2>
+  <p>StreamHub ne s'adresse pas spécifiquement aux enfants et ne collecte aucune donnée les concernant.</p>
+
+  <h2>Contact</h2>
+  <p>Pour toute question : <a href="https://github.com/anubis78xx-cpu/streamhub/issues">ouvrir un ticket sur la page du projet</a>.</p>
+
+  <section class="en">
+    <h2>Summary in English</h2>
+    <p>StreamHub has no user account, no ads, no analytics and no server of its own. Everything you save (services, watchlist,
+      watched episodes, added sites, search history) stays on your device; the developer receives and sells no data.
+      The app calls these third parties directly, which receive your IP address and the request: TMDB (search, new releases,
+      episodes), Dailymotion (video search), Google favicon service (site icons), AdGuard filter list on GitHub (weekly download),
+      and ipinfo.io / freeipapi.com / ipwho.is only while a VPN is on (exit country). Sync is off by default and only goes to a
+      server the user runs. Permissions: Internet, network state (VPN detection only), queries of installed VPN and streaming apps
+      (never leaves the device). No location, microphone, camera or contacts access.
+      Contact: <a href="https://github.com/anubis78xx-cpu/streamhub/issues">GitHub issues</a>.</p>
+  </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,69 @@
+plugins {
+    id "com.android.application"
+}
+
+// The web app (one level above android/) is copied into the APK assets at build time,
+// so the PWA stays the single source of truth.
+def webAssets = layout.buildDirectory.dir("generated/www-assets").get().asFile
+
+// Release key for Google Play: android/keystore.properties (never in git), with
+// storeFile, storePassword, keyAlias, keyPassword. Without it, release builds use the debug key.
+def keystoreFile = rootProject.file("keystore.properties")
+def keystore = new Properties()
+if (keystoreFile.exists()) keystoreFile.withInputStream { keystore.load(it) }
+
+android {
+    // Store edition: its own application id, so it installs next to the personal StreamHub.
+    namespace "fr.streamhub.app"
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "fr.streamhub.android"
+        minSdk 24
+        targetSdk 35
+        versionCode 1
+        versionName "1.0"
+    }
+
+    signingConfigs {
+        release {
+            if (keystoreFile.exists()) {
+                storeFile rootProject.file(keystore["storeFile"])
+                storePassword keystore["storePassword"]
+                keyAlias keystore["keyAlias"]
+                keyPassword keystore["keyPassword"]
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig keystoreFile.exists() ? signingConfigs.release : signingConfigs.debug
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    sourceSets {
+        main {
+            assets.srcDirs += webAssets
+        }
+    }
+}
+
+dependencies {
+    implementation "androidx.webkit:webkit:1.12.1"
+}
+
+tasks.register("copyWeb", Copy) {
+    from(rootDir.parentFile) {
+        include "index.html", "tmdb-key.js", "app.js", "style.css", "manifest.webmanifest", "icons/**"
+    }
+    into new File(webAssets, "www")
+}
+
+preBuild.dependsOn "copyWeb"

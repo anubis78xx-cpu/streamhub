@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+dist/
+build/
+.gradle/
+local.properties
+keystore.properties
+*.jks
+*.keystore
+.env
+tmdb-key.js
+web/site/
+android/app/src/main/assets/config.json
+android/app/src/main/assets/update.json
+*.json.bak
